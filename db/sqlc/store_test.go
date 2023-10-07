@@ -53,9 +53,9 @@ func TestTransferTx(t *testing.T) {
 		_, err = store.GetTransfer(context.Background(), transfer.ID)
 		require.NoError(t, err)
 
+		// check entries
 		fromEntry := result.FromEntry
 
-		// Check from entry
 		require.NotEmpty(t, fromEntry)
 		require.Equal(t, randomAccount1.ID, fromEntry.AccountID)
 		require.Equal(t, -amount, fromEntry.Amount)
