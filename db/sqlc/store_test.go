@@ -13,13 +13,13 @@ func TestTransferTx(t *testing.T) {
 	randomAccount1 := createAndTestRandomAccount(t)
 	randomAccount2 := createAndTestRandomAccount(t)
 
-	// Run n concurrent transfer transactions
 	n := 5
 	amount := int64(10)
 
 	errs := make(chan error)
 	results := make(chan TransferTxResult)
 
+	// Run n concurrent transfer transactions
 	for i := 0; i < n; i++ {
 		go func() {
 			result, err := store.TransferTx(context.Background(), TransferTxParams{
@@ -32,6 +32,8 @@ func TestTransferTx(t *testing.T) {
 			results <- result
 		}()
 	}
+
+	existed := make(map[int]bool)
 
 	for i := 0; i < n; i++ {
 		err := <-errs
@@ -54,6 +56,7 @@ func TestTransferTx(t *testing.T) {
 		require.NoError(t, err)
 
 		// check entries
+
 		fromEntry := result.FromEntry
 
 		require.NotEmpty(t, fromEntry)
@@ -67,7 +70,6 @@ func TestTransferTx(t *testing.T) {
 
 		toEntry := result.ToEntry
 
-		// Check to entry
 		require.NotEmpty(t, toEntry)
 		require.Equal(t, randomAccount2.ID, toEntry.AccountID)
 		require.Equal(t, amount, toEntry.Amount)
@@ -77,6 +79,47 @@ func TestTransferTx(t *testing.T) {
 		_, err = store.GetEntry(context.Background(), toEntry.ID)
 		require.NoError(t, err)
 
-		// TODO: Check account balances
+		// Check accounts
+
+		fromAccount := result.FromAccount
+		require.NotEmpty(t, fromAccount)
+		require.Equal(t, randomAccount1.ID, fromAccount.ID)
+
+		toAccount := result.ToAccount
+		require.NotEmpty(t, toAccount)
+		require.Equal(t, randomAccount2.ID, toAccount.ID)
+
+		// Check accounts balance
+
+		// The amount of money going out of account 1
+		diff1 := randomAccount1.Balance - fromAccount.Balance
+		// The amount of money going into account 2
+		diff2 := toAccount.Balance - randomAccount2.Balance
+
+		require.Equal(t, diff1, diff2)
+		// Cannot transfer a negative amount of money
+		require.True(t, diff1 > 0)
+		require.True(t, diff1%amount == 0) // 1 * amount, 2 * amount, 3 * amount... n * amount
+
+		k := int(diff1 / amount)
+		require.True(t, k >= 1 && k <= n)
+		require.NotContains(t, existed, k)
+		existed[k] = true
 	}
+
+	// Check the final updated balance of the two accounts
+
+	updatedAccount1, err := testQueries.GetAccount(context.Background(), randomAccount1.ID)
+	require.NoError(t, err)
+
+	updatedAccount2, err := testQueries.GetAccount(context.Background(), randomAccount2.ID)
+	require.NoError(t, err)
+
+	// Check the final updated balance of the two accounts
+
+	// Verify the amount of money that should be going out of account1 actually went out
+	require.Equal(t, randomAccount1.Balance-int64(n)*amount, updatedAccount1.Balance)
+
+	// Verify the amount of money that should be going out into account2 actually went in
+	require.Equal(t, randomAccount2.Balance+int64(n)*amount, updatedAccount2.Balance)
 }

@@ -46,11 +46,14 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 		var err error
 
 		// Create a transfer record showing the money leaving one account and entering the other
-		result.Transfer, err = q.CreateTransfer(ctx, CreateTransferParams{
-			FromAccountID: arg.FromAccountID,
-			ToAccountID:   arg.ToAccountID,
-			Amount:        arg.Amount,
-		})
+		// CreateTransferParams(arg) is the same as
+		// CreateTransferParams{
+		//	FromAccountID: arg.FromAccountID,
+		//	ToAccountID:   arg.ToAccountID,
+		//	Amount:        arg.Amount,
+		// }
+		// But it makes the linter happy (and looks a little cleaner)
+		result.Transfer, err = q.CreateTransfer(ctx, CreateTransferParams(arg))
 
 		if err != nil {
 			return err
@@ -76,7 +79,25 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 			return err
 		}
 
-		// TODO: Update account balances
+		//  Update account balances
+
+		result.FromAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+			ID:     arg.FromAccountID,
+			Amount: -arg.Amount,
+		})
+
+		if err != nil {
+			return err
+		}
+
+		result.ToAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+			ID:     arg.ToAccountID,
+			Amount: arg.Amount,
+		})
+
+		if err != nil {
+			return err
+		}
 
 		return nil
 	})
