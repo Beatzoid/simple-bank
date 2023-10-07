@@ -1,6 +1,6 @@
 # Simple Bank
 
-A simple bank backend application written in Go
+A simple backend banking app made using Go
 
 # Prerequisites
 
