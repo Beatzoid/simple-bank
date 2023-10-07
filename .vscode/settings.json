@@ -1,3 +1,22 @@
 {
-    "cSpell.words": ["createdb", "dropdb", "migratedown", "migrateup"]
+    "cSpell.words": [
+        "createdb",
+        "DBTX",
+        "dropdb",
+        "migratedown",
+        "migrateup",
+        "sqlc"
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "postgres12",
+            "database": "simple_bank",
+            "username": "root",
+            "password": "secret"
+        }
+    ]
 }
