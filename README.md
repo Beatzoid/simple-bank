@@ -7,7 +7,6 @@ A simple bank backend application written in Go
 1. [Go](https://golang.org/doc/install)
 2. [PostgreSQL](https://www.postgresql.org/download/)
 3. [Docker](https://docs.docker.com/get-docker/)
- <!-- 4. [Docker Compose](https://docs.docker.com/compose/install/) -->
 4. [Golang Migrate](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#installation)
 
 # How to run
