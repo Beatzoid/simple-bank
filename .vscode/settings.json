@@ -5,7 +5,9 @@
         "dropdb",
         "migratedown",
         "migrateup",
-        "sqlc"
+        "sqlc",
+        "sslmode",
+        "stretchr"
     ],
     "sqltools.connections": [
         {

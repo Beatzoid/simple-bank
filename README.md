@@ -9,12 +9,20 @@ A simple backend banking app made using Go
 3. [Docker](https://docs.docker.com/get-docker/)
 4. [Golang Migrate](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#installation)
 
-# How to run
+# Setup
 
 1. Clone this repository
 2. Run `make postgres` to start the PostgreSQL database
 3. Run `make createdb` to create the database
 4. Run `make migrateup` to run the database migrations
+
+# Run
+
+Soon™
+
+# Tests
+
+1. Run `make test` after [setting up](#setup) the project
 
 # Clean up
 
