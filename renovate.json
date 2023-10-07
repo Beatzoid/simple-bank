@@ -1,0 +1,9 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["config:base"],
+    "commitMessagePrefix": "⬆",
+    "rangeStrategy": "bump",
+    "prConcurrentLimit": 0,
+    "prHourlyLimit": 0,
+    "dependencyDashboard": true
+}
