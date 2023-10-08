@@ -18,7 +18,8 @@ A simple backend banking app made using Go
 
 # Run
 
-Soon™
+1. After [setting up](#setup) the project, run `make server` to start the server
+    - See [server.go](./src/api/server.go) for the available endpoints
 
 # Tests
 
