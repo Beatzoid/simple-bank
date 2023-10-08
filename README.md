@@ -8,6 +8,7 @@ A simple backend banking app made using Go
 2. [PostgreSQL](https://www.postgresql.org/download/)
 3. [Docker](https://docs.docker.com/get-docker/)
 4. [Golang Migrate](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#installation)
+5. [Golang air](https://github.com/cosmtrek/air#installation)
 
 # Setup
 
@@ -18,7 +19,7 @@ A simple backend banking app made using Go
 
 # Run
 
-1. After [setting up](#setup) the project, run `make server` to start the server
+1. After [setting up](#setup) the project, run `make devserver` to start the server
     - See [server.go](./src/api/server.go) for the available endpoints
 
 # Tests

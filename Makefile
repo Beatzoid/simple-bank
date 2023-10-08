@@ -19,10 +19,13 @@ sqlc:
 test:
 	cd src && go test -v -cover -test.coverprofile=coverage.cov ./...
 
-server:
+devserver:
+	cd src && air
+
+runserver:
 	cd src && go run main.go
 
 build:
 	cd src && go build -v ./...
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server build
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test devserver runserver build

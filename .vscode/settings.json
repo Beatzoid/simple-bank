@@ -3,6 +3,7 @@
     "cSpell.words": [
         "createdb",
         "DBTX",
+        "devserver",
         "dropdb",
         "gonic",
         "mapstructure",
