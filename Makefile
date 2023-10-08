@@ -17,9 +17,12 @@ sqlc:
 	cd src && sqlc generate
 
 test:
-	cd src && go test -v -cover ./...
+	cd src && go test -v -cover -test.coverprofile=coverage.cov ./...
 
 server:
 	cd src && go run main.go
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server
+build:
+	cd src && go build -v ./...
+
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server build
