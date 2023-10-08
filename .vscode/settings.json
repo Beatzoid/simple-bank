@@ -1,9 +1,11 @@
 {
+    "explorer.excludeGitIgnore": true,
     "cSpell.words": [
         "createdb",
         "DBTX",
         "dropdb",
         "gonic",
+        "mapstructure",
         "migratedown",
         "migrateup",
         "oneof",
