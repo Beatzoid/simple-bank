@@ -3,8 +3,10 @@
         "createdb",
         "DBTX",
         "dropdb",
+        "gonic",
         "migratedown",
         "migrateup",
+        "oneof",
         "sqlc",
         "sslmode",
         "stretchr"
