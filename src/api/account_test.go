@@ -455,7 +455,7 @@ func TestUpdateAccountAPI(t *testing.T) {
 
 			url := "/account"
 
-			request, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(data))
+			request, err := http.NewRequest(http.MethodPatch, url, bytes.NewReader(data))
 			require.NoError(t, err)
 
 			server.router.ServeHTTP(recorder, request)
