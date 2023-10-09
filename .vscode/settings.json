@@ -5,6 +5,7 @@
         "DBTX",
         "devserver",
         "dropdb",
+        "fkey",
         "gomock",
         "gonic",
         "mapstructure",

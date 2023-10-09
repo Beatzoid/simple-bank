@@ -10,8 +10,15 @@ dropdb:
 migrateup:
 	cd src && migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up 
 
+migrateup1:
+	cd src && migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up 1
+
 migratedown:
 	cd src && migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down 
+
+migratedown1:
+	cd src && migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down 1
+
 
 sqlc:
 	 sqlc generate
@@ -31,4 +38,4 @@ runserver:
 build:
 	cd src && go build -v ./...
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test mock devserver runserver build
+.PHONY: postgres createdb dropdb migrateup migratedown migrateup1 migratedown1 sqlc test mock devserver runserver build
