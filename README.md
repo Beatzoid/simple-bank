@@ -9,6 +9,7 @@ A simple backend banking app made using Go
 3. [Docker](https://docs.docker.com/get-docker/)
 4. [Golang Migrate](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#installation)
 5. [Golang air](https://github.com/cosmtrek/air#installation)
+6. [Golang Mock](https://github.com/uber-go/mock#installation)
 
 # Setup
 

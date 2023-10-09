@@ -14,10 +14,13 @@ migratedown:
 	cd src && migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down 
 
 sqlc:
-	cd src && sqlc generate
+	 sqlc generate
 
 test:
 	cd src && go test -v -cover -test.coverprofile=coverage.cov ./...
+
+mock:
+	cd src && mockgen -package mockdb -destination db/mock/store.go github.com/beatzoid/simple-bank/db/sqlc Store
 
 devserver:
 	cd src && air
@@ -28,4 +31,4 @@ runserver:
 build:
 	cd src && go build -v ./...
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test devserver runserver build
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test mock devserver runserver build
