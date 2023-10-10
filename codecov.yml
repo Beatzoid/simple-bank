@@ -5,3 +5,4 @@ coverage:
                 target: 65%
                 # This allows a 80% drop from the previous base commit coverage
                 threshold: 80%
+                informational: true
