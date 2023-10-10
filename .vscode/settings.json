@@ -15,6 +15,7 @@
         "mockdb",
         "mockgen",
         "oneof",
+        "Paseto",
         "sqlc",
         "sslmode",
         "stretchr"
