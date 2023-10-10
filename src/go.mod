@@ -9,7 +9,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.0.0
 	github.com/google/uuid v1.3.1
 	github.com/lib/pq v1.10.9
-	github.com/o1egl/paseto v1.0.0
+	github.com/o1egl/paseto/v2 v2.1.1
 	github.com/o1egl/paseto/v2 v2.1.1
 	github.com/spf13/viper v1.17.0
 	github.com/stretchr/testify v1.8.4
