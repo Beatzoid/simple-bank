@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/aead/chacha20poly1305"
-	"github.com/o1egl/paseto"
+	"github.com/o1egl/paseto/v2"
 )
 
 // PasetoMaker is a PASETO token maker
