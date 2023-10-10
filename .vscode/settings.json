@@ -1,6 +1,7 @@
 {
     "explorer.excludeGitIgnore": true,
     "cSpell.words": [
+        "alphanum",
         "createdb",
         "DBTX",
         "devserver",

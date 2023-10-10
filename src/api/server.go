@@ -25,6 +25,8 @@ func NewServer(store db.Store) *Server {
 	// We don't use proxies so no need to trust any
 	router.SetTrustedProxies(nil)
 
+	router.POST("/users", server.createUser)
+
 	router.POST("/accounts", server.createAccount)
 	router.GET("/account/:id", server.getAccount)
 	router.GET("/accounts", server.listAccounts)
