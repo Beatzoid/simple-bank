@@ -14,6 +14,7 @@ import (
 	db "github.com/beatzoid/simple-bank/db/sqlc"
 	"github.com/beatzoid/simple-bank/util"
 	"github.com/gin-gonic/gin"
+	"github.com/lib/pq"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 )
@@ -149,6 +150,26 @@ func TestCreateAccountAPI(t *testing.T) {
 					Return(account, nil)
 			},
 			expectStatus: http.StatusOK,
+		},
+		{
+			name: "DuplicateOwnerCurrency",
+			body: gin.H{
+				"owner":    account.Owner,
+				"currency": account.Currency,
+			},
+			buildStubs: func(store *mockdb.MockStore) {
+				arg := db.CreateAccountParams{
+					Owner:    account.Owner,
+					Currency: account.Currency,
+					Balance:  0,
+				}
+
+				store.EXPECT().
+					CreateAccount(gomock.Any(), gomock.Eq(arg)).
+					Times(1).
+					Return(account, &pq.Error{Code: "23505"})
+			},
+			expectStatus: http.StatusUnprocessableEntity,
 		},
 		{
 			name: "InvalidCurrency",

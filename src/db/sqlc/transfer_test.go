@@ -79,4 +79,15 @@ func TestListTransfer(t *testing.T) {
 		require.NotEmpty(t, transfer)
 		require.True(t, transfer.FromAccountID == randomAccount1.ID || transfer.ToAccountID == randomAccount1.ID)
 	}
+
+	arg = ListTransfersParams{
+		FromAccountID: randomAccount1.ID,
+		ToAccountID:   randomAccount1.ID,
+		Limit:         -5,
+		Offset:        -5,
+	}
+
+	_, err = testQueries.ListTransfers(context.Background(), arg)
+
+	require.Error(t, err)
 }

@@ -71,4 +71,14 @@ func TestListEntries(t *testing.T) {
 		require.NotEmpty(t, entry)
 		require.Equal(t, arg.AccountID, entry.AccountID)
 	}
+
+	arg = ListEntriesParams{
+		AccountID: randomAccount.ID,
+		Limit:     -5,
+		Offset:    -5, // Skip the first 5 records and return the next 5
+	}
+
+	_, err = testQueries.ListEntries(context.Background(), arg)
+
+	require.Error(t, err)
 }
