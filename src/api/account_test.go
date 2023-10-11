@@ -103,7 +103,7 @@ func TestGetAccountAPI(t *testing.T) {
 			tc.buildStubs(store)
 
 			// Start test server
-			server := NewServer(store)
+			server := newTestServer(t, store)
 			// Recorder is a mock of http.ResponseWriter, which allows us to
 			// send requests to the server and record the response without
 			// actually sending the request over the network
@@ -225,7 +225,7 @@ func TestCreateAccountAPI(t *testing.T) {
 			tc.buildStubs(store)
 
 			// Start test server
-			server := NewServer(store)
+			server := newTestServer(t, store)
 			// Recorder is a mock of http.ResponseWriter, which allows us to
 			// send requests to the server and record the response without
 			// actually sending the request over the network
@@ -346,7 +346,7 @@ func TestListAccountsAPI(t *testing.T) {
 			store := mockdb.NewMockStore(ctrl)
 			tc.buildStubs(store)
 
-			server := NewServer(store)
+			server := newTestServer(t, store)
 			recorder := httptest.NewRecorder()
 
 			url := "/accounts"
@@ -468,7 +468,7 @@ func TestUpdateAccountAPI(t *testing.T) {
 			store := mockdb.NewMockStore(ctrl)
 			tc.buildStubs(store)
 
-			server := NewServer(store)
+			server := newTestServer(t, store)
 			recorder := httptest.NewRecorder()
 
 			data, err := json.Marshal(tc.body)
@@ -549,7 +549,7 @@ func TestDeleteAccountAPI(t *testing.T) {
 			tc.buildStubs(store)
 
 			// Start test server
-			server := NewServer(store)
+			server := newTestServer(t, store)
 			// Recorder is a mock of http.ResponseWriter, which allows us to
 			// send requests to the server and record the response without
 			// actually sending the request over the network
