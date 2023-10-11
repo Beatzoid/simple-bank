@@ -64,8 +64,7 @@ func (server *Server) createUser(ctx *gin.Context) {
 
 	if err != nil {
 		if pqErr, ok := err.(*pq.Error); ok {
-			switch pqErr.Code.Name() {
-			case "unique_violation":
+			if pqErr.Code.Name() == "unique_violation" {
 				ctx.JSON(http.StatusBadRequest, errorResponse(err))
 				return
 			}
