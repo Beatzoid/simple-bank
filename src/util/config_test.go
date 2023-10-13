@@ -18,7 +18,7 @@ func TestLoadConfig(t *testing.T) {
 	require.Error(t, err)
 
 	// Load configuration
-	config, err = LoadConfig("../../")
+	config, err = LoadConfig("../")
 	require.NoError(t, err)
 
 	// Assert values
