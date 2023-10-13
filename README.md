@@ -11,26 +11,20 @@ A simple backend banking app made using Go
 5. [Golang air](https://github.com/cosmtrek/air#installation)
 6. [Golang Mock](https://github.com/uber-go/mock#installation)
 
-# Setup
+# Setup and Run
 
 1. Clone this repository
-2. Run `make postgres` to start the PostgreSQL database
-3. Run `make createdb` to create the database
-4. Run `make migrateup` to run the database migrations
-
-# Run
-
-1. After [setting up](#setup) the project, run `make devserver` to start the server
+2. Run `docker compose up` to initialize and start everything
     - See [server.go](./src/api/server.go) for the available endpoints
 
 # Tests
 
-1. Run `make test` after [setting up](#setup) the project
+1. Run `make test`
 
 # Clean up
 
-1. Run `make migratedown` to clean up the database migrations
-2. Run `make dropdb` to drop the database
+1. Run `docker compose down` to stop and remove everything
+2. Run `docker rmi simplebank-api` to remove the Docker image
 
 # Credit
 
