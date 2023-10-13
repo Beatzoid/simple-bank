@@ -2,15 +2,20 @@ package api
 
 import (
 	"database/sql"
+	"errors"
 	"net/http"
 
 	db "github.com/beatzoid/simple-bank/db/sqlc"
+	"github.com/beatzoid/simple-bank/token"
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 )
 
+const (
+	mismatchingAccountOwnerError = "account doesn't belong to the authenticated user"
+)
+
 type createAccountRequest struct {
-	Owner    string `json:"owner" binding:"required"`
 	Currency string `json:"currency" binding:"required,isValidCurrency"`
 }
 
@@ -24,8 +29,9 @@ func (server *Server) createAccount(ctx *gin.Context) {
 		return
 	}
 
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
 	arg := db.CreateAccountParams{
-		Owner:    req.Owner,
+		Owner:    authPayload.Username,
 		Currency: req.Currency,
 		Balance:  0,
 	}
@@ -61,15 +67,11 @@ func (server *Server) getAccount(ctx *gin.Context) {
 		return
 	}
 
-	account, err := server.store.GetAccount(ctx, req.ID)
+	// Verify the authenticated user owns the account their trying to get
+	account, statusCode, err := verifyAccountOwner(ctx, server.store, req.ID)
 
 	if err != nil {
-		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusNotFound, errorResponse(err))
-			return
-		}
-
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		ctx.JSON(statusCode, errorResponse(err))
 		return
 	}
 
@@ -91,7 +93,10 @@ func (server *Server) listAccounts(ctx *gin.Context) {
 		return
 	}
 
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+
 	arg := db.ListAccountsParams{
+		Owner:  authPayload.Username,
 		Limit:  req.PageSize,
 		Offset: (req.PageID - 1) * req.PageSize,
 	}
@@ -118,6 +123,14 @@ func (server *Server) updateAccount(ctx *gin.Context) {
 	// that it has the correct fields as defined by the updateAccountRequest struct.
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	// Verify the authenticated user owns the account their trying to update
+	_, statusCode, err := verifyAccountOwner(ctx, server.store, req.ID)
+
+	if err != nil {
+		ctx.JSON(statusCode, errorResponse(err))
 		return
 	}
 
@@ -150,12 +163,45 @@ func (server *Server) deleteAccount(ctx *gin.Context) {
 		return
 	}
 
-	err := server.store.DeleteAccount(ctx, req.ID)
+	// Verify the authenticated user owns the account their trying to delete
+	_, statusCode, err := verifyAccountOwner(ctx, server.store, req.ID)
+
+	if err != nil {
+		ctx.JSON(statusCode, errorResponse(err))
+		return
+	}
+
+	err = server.store.DeleteAccount(ctx, req.ID)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"status": "successfully deleted account"})
+	ctx.JSON(http.StatusOK, gin.H{"msg": "successfully deleted account"})
+}
+
+func verifyAccountOwner(ctx *gin.Context, store db.Store, accountID int64) (db.Account, int, error) {
+	// Get authorization data from the context
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+
+	// Get the account
+	account, err := store.GetAccount(ctx, accountID)
+
+	if err != nil {
+
+		if err == sql.ErrNoRows {
+			return db.Account{}, http.StatusNotFound, errors.New("account doesn't exist")
+		}
+
+		// Other internal error
+		return db.Account{}, http.StatusInternalServerError, err
+	}
+
+	if account.Owner != authPayload.Username {
+		// print("verify second if - account doesn't belong to the authenticated user", "\n")
+		return db.Account{}, http.StatusUnauthorized, errors.New(mismatchingAccountOwnerError)
+	}
+
+	return account, http.StatusOK, nil
 }
