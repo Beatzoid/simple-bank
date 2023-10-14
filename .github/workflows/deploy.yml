@@ -28,6 +28,7 @@ jobs:
                   role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
                   role-duration-seconds: 1200
                   role-session-name: GitHub_to_AWS_via_FederatedOIDC
+                  role-skip-session-tagging: true
 
             - name: Sts GetCallerIdentity
               run: |
