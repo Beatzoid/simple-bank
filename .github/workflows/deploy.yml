@@ -1,0 +1,44 @@
+name: Deploy to production
+
+on:
+    push:
+        branches: ["master"]
+        paths: ["**.go"]
+    workflow_dispatch:
+
+jobs:
+    build:
+        name: Build image
+        runs-on: ubuntu-latest
+
+        permissions:
+            id-token: write
+            contents: read
+
+        steps:
+            - name: Git clone the repository
+              uses: actions/checkout@v3
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  role-to-assume: arn:aws:iam::237947248857:role/GithubAction-AssumeRoleWithAction
+                  role-session-name: GitHub_to_AWS_via_FederatedOIDC
+                  aws-region: us-east-1
+
+            - name: Sts GetCallerIdentity
+              run: |
+                  aws sts get-caller-identity
+
+            # - name: Login to Amazon ECR
+            #   id: login-ecr
+            #   uses: aws-actions/amazon-ecr-login@v2
+
+            # - name: Build, tag, and push docker image to Amazon ECR
+            #   env:
+            #       REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            #       REPOSITORY: simple-bank
+            #       IMAGE_TAG: ${{ github.sha }}
+            #   run: |
+            #       docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+            #       docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
