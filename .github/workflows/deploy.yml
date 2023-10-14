@@ -8,7 +8,7 @@ on:
 
 jobs:
     build:
-        name: Build image
+        name: Deploy
         runs-on: ubuntu-latest
 
         permissions:
@@ -24,7 +24,7 @@ jobs:
               with:
                   role-to-assume: arn:aws:iam::237947248857:role/GithubAction-AssumeRoleWithAction
                   role-session-name: GitHub_to_AWS_via_FederatedOIDC
-                  aws-region: us-east-1
+                  aws-region: us-west-1
 
             - name: Sts GetCallerIdentity
               run: |
