@@ -1,7 +1,18 @@
 {
-    "explorer.excludeGitIgnore": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/.VSCodeCounter": true,
+        "**/*.cov": true,
+        "**/tmp": true
+    },
     "cSpell.words": [
         "alphanum",
+        "bootstrappers",
         "createdb",
         "DBTX",
         "devserver",
@@ -16,9 +27,11 @@
         "mockgen",
         "oneof",
         "Paseto",
+        "rolearn",
         "sqlc",
         "sslmode",
-        "stretchr"
+        "stretchr",
+        "userarn"
     ],
     "sqltools.connections": [
         {
