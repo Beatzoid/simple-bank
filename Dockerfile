@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.21.3-alpine3.18 AS builder
+FROM golang:1.22.1-alpine3.18 AS builder
 WORKDIR /app
 
 # Copy source files
